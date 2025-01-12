@@ -16,11 +16,6 @@ dist-ssr
 
 # PWA build files
 client/dist/
-client/public/manifest.webmanifest
-client/public/registerSW.js
-client/public/sw.js
-client/public/icon-*.png
-client/public/*.svg
 
 # Local env files
 *.local
