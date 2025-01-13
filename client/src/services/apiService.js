@@ -38,7 +38,9 @@ export const fetchWordsFromServer = async () => {
   try {
     const user = auth.currentUser;
     if (!user) {
-      throw new Error("User not logged in");
+      const response = await axios.get(`${API_BASE_URL}/api/words?public=true`);
+      console.log("Server response:", response.data); // レスポンスデータを確認
+      return response.data; // サーバーから取得した単語リスト
     }
     const idToken = await user.getIdToken();
 

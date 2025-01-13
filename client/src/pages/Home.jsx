@@ -9,13 +9,15 @@ export default function Home() {
 
   return (
     <div>
-      <h1>myglish - remember words</h1>
+      <h1>myglish</h1>
       <AuthButton />
-      {user && (
+      {user ? (
         <>
           <WordForm />
           <WordList />
         </>
+      ) : (
+        <WordList />
       )}
     </div>
   );

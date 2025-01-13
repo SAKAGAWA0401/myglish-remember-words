@@ -9,6 +9,18 @@ router.post("/words", wordsProcessAndSave);
 // Firestoreから単語リストを取得
 router.get("/words", async (req, res) => {
     try {
+      const { public: isPublic } = req.query; // クエリパラメータを取得
+
+      if (isPublic === "true") {
+        // パブリックデータを取得して返す
+        const publicWordsSnapshot = await db.collection("words").get();
+        const publicWords = publicWordsSnapshot.docs.map((doc) => ({
+          id: doc.id,
+          ...doc.data(),
+        }));
+        return res.json(publicWords); // パブリック単語を返す
+      }
+
       const authHeader = req.headers.authorization;
 
       if (!authHeader || !authHeader.startsWith("Bearer ")) {
