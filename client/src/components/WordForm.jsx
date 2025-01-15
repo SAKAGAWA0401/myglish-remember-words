@@ -1,14 +1,21 @@
-import { useState } from 'react';
 import { sendWordsToServer, fetchWordsFromServer } from '@/services/apiService';
 import { useWordList } from "@/hooks/useWordList";
+import { Button } from "@/components/ui/button";
+import { Form, FormField, FormItem, FormLabel, FormControl } from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import { useForm } from "react-hook-form";
 
 export default function WordForm() {
-  const [english, setEnglish] = useState('');
-  const [japanese, setJapanese] = useState('');
   const { setWords } = useWordList(); // WordListContextからsetWordsを取得
+  const { handleSubmit, control, reset } = useForm({
+    defaultValues: {
+      english: "",
+      japanese: "",
+    },
+  });
 
-  async function handleSubmit(e) {
-    e.preventDefault();
+  async function onSubmit(data) {
+    const { english, japanese } = data;
     if (!english.trim() || !japanese.trim()) return;
 
     // バリデーション: 英語140文字以下かつ英語のみ
@@ -27,36 +34,47 @@ export default function WordForm() {
       await sendWordsToServer(english, japanese);
       const updatedWords = await fetchWordsFromServer(); // サーバーから最新リストを取得
       setWords(updatedWords); // 取得したリストを更新      
+      reset(); // フォームをリセット
     } catch (err) {
       console.error(err);
       alert(err.message); // エラーメッセージを表示
     }
-    // フォームをリセット
-    setEnglish('');
-    setJapanese('');
   }
 
   return (
-    <form onSubmit={handleSubmit}>
-      <div>
-        <label>English:</label>
-        <input
-          type="text"
-          value={english}
-          onChange={(e) => setEnglish(e.target.value)}
-          required
+    <Form onSubmit={handleSubmit(onSubmit)}>
+      <form className="p-4 max-w-md">
+        {/* English Field */}
+        <FormField
+          name="english"
+          control={control}
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>English:</FormLabel>
+              <FormControl>
+                <Input {...field} type="text" required />
+              </FormControl>
+            </FormItem>
+          )}
         />
-      </div>
-      <div>
-        <label>Japanese:</label>
-        <input
-          type="text"
-          value={japanese}
-          onChange={(e) => setJapanese(e.target.value)}
-          required
+        {/* Japanese Field */}
+        <FormField
+          name="japanese"
+          control={control}
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Japanese:</FormLabel>
+              <FormControl>
+                <Input {...field} type="text" required />
+              </FormControl>
+            </FormItem>
+          )}
         />
-      </div>
-      <button type="submit">Save Word or Phrase</button>
-    </form>
+
+        <Button variant="default" type="submit" className="mt-4">
+          Save
+        </Button>
+      </form>
+    </Form>
   );
 }
