@@ -1,7 +1,5 @@
-/**
- * WordItem コンポーネント
- * 各単語データを受け取り表示および音声再生機能を提供
- */
+import { Card, CardHeader, CardContent } from './ui/card';
+import { Button } from './ui/button';
 import PropTypes from 'prop-types';
 
 export default function WordItem({ word }) {
@@ -36,18 +34,22 @@ export default function WordItem({ word }) {
   };
 
   return (
-    <div className="card">
-      <div className="card-header">
-        <h3>{english}</h3>
-        <p>{pronunciation}</p>
-      </div>
-      <div className="card-body">
-        <p>{japanese}</p>
-        <div className="buttons">
-          <button onClick={() => playAudio(audioEnglish)}>Play English</button>
-          <button onClick={() => playAudio(audioJapanese)}>Play Japanese</button>
+    <Card>
+      <CardHeader>
+        <h3 className="font-semibold">{english}</h3>
+      </CardHeader>
+      <CardContent className="p-4 border rounded-lg shadow-sm max-w-md">
+        <div className="flex items-center justify-between">
+          <div className="flex-1 space-y-2">
+            <p>{pronunciation}</p>
+            <p>{japanese}</p>
+          </div>
         </div>
-      </div>
-    </div>
+        <div className="flex space-x-2 items-center mt-4">
+          <Button onClick={() => playAudio(audioEnglish)} variant="outline">Play English</Button>
+          <Button onClick={() => playAudio(audioJapanese)} variant="outline">Play Japanese</Button>
+        </div>
+      </CardContent>
+    </Card>
   );
 }

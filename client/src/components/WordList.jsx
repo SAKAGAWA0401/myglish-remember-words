@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { fetchWordsFromServer } from "@/services/apiService";
 import { useWordList } from "@/hooks/useWordList";
 import WordItem from "./WordItem";
+import { Button } from "./ui/button";
 
 /**
  * WordList コンポーネント
@@ -71,9 +72,13 @@ export default function WordList() {
   if (error) return <p>{error}</p>;
 
   return (
-    <div>
-      <h2>Word List</h2>
-      <button onClick={playAllAudioAlternating}>Play All</button>
+    <div className="p-4 max-w-md space-y-4">
+      <h2 className="text-xl font-semibold">
+        Word List
+      </h2>
+      <Button onClick={playAllAudioAlternating} variant="destructive" className="mt-4">
+        Play All
+      </Button>
       {Array.isArray(words) && words.length > 0 ? (
         words.map((word) => <WordItem key={word.id} word={word} />)
       ) : (
