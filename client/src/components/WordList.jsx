@@ -80,7 +80,10 @@ export default function WordList() {
         Play All
       </Button>
       {Array.isArray(words) && words.length > 0 ? (
-        words.map((word) => <WordItem key={word.id} word={word} />)
+      words
+        .slice() // 元の配列を破壊しないためにコピー
+        .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)) // createdAtの降順でソート
+        .map((word) => <WordItem key={word.id} word={word} />)
       ) : (
         <p>No words found.</p>
       )}
