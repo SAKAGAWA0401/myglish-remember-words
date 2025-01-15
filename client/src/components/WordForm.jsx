@@ -19,13 +19,13 @@ export default function WordForm() {
     if (!english.trim() || !japanese.trim()) return;
 
     // バリデーション: 英語140文字以下かつ英語のみ
-    if (english.length > 140 || !/^[a-zA-Z\s]+$/.test(english)) {
-      alert("English input must be 140 characters or less and contain only alphabets.");
+    if (english.length > 140 || !/^[a-zA-Z\s,.?!]+$/.test(english)) {
+      alert("English input must be 140 characters or less and contain only alphabets and basic punctuation.");
       return;
     }
 
     // バリデーション: 日本語140文字以下かつ日本語のみ
-    if (japanese.length > 140 || !/^[\u3040-\u30FF\u4E00-\u9FFF]+$/.test(japanese)) {
+    if (japanese.length > 140 || !/^[\u3040-\u30FF\u4E00-\u9FFF、。？！]+$/.test(japanese)) {
       alert("Japanese input must be 140 characters or less and contain only Japanese characters.");
       return;
     }
